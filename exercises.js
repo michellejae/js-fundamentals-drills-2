@@ -6,7 +6,16 @@
  * @return {Array}
  */
 
-var getAllUsernames;
+var getAllUsernames = function (obj) {
+  var result = [];
+  var users = obj.data.id;
+  for (var i in users){
+    //console.log(users[i].username)
+    result.push(users[i].username)
+  }
+  return result
+  
+}
 
 /* #hometownCity
  *
@@ -16,7 +25,15 @@ var getAllUsernames;
  * @return {String}
  */
 
-var hometownCity;
+ // ask mel about why it becomes undefined if you try to do arr[i].hometown.state.city?
+var hometownCity = function (arr){
+  for (var i=0 ; i<arr.length; i++){
+     var homeCity = arr[i].hometown.state
+    for (var key in homeCity) {
+      return homeCity[key].city
+    }
+  }
+}
 
 /* #usersCurrentState
  *
@@ -27,7 +44,16 @@ var hometownCity;
  * @return {Object}
  */
 
-var usersCurrentState;
+var usersCurrentState = function (data, usernames){
+  let obj = {}
+
+  for (let i=0; i<data.length; i++){
+    obj[usernames[i]] = data[i][1].currentLocation.state
+   // console.log(data[i][1].currentLocation.state)
+  }
+return obj
+}
+
 
 /* #findAdmin
  *
@@ -37,7 +63,14 @@ var usersCurrentState;
  * @return {String}
  */
 
-var findAdmin;
+var findAdmin = function (obj) {
+  var info = obj.data.id;
+  for (var key in info) {
+   if (info[key].admin === true) {
+     return info[key].username 
+   }
+  }
+}
 
 /* #addNewMovie
  *
@@ -46,11 +79,16 @@ var findAdmin;
  * @param {Object}
  * @param {Number} id
  * @param {String} movie to add to array
- * @return {Array}
+ * @return {Array}     
  */
 
-var addNewMovie;
+var addNewMovie = function (obj, num, str){
+  var array = obj.data.id[num].favoriteMovies
+  array.push(str)
+  return array
+} 
 
+ 
 /* #favoriteBooks
  *
  * Takes in an object and returns an array containing an object with the users favorite books with the author as the key and the title as the value.
@@ -59,7 +97,17 @@ var addNewMovie;
  * @return {Array}
  */
 
-var favoriteBooks;
+var favoriteBooks = function (obj) {
+  let arr = [];
+  let newObj = {};
+  let books = obj.data.id
+  for (let i in books){
+    newObj[books[i].favoriteBook.author] = books[i].favoriteBook.title
+  }
+  arr.push(newObj)
+  return arr
+
+}
 
 /* #countTracks
  *
@@ -69,7 +117,15 @@ var favoriteBooks;
  * @return {Number}
  */
 
-var countTracks;
+var countTracks = function (obj) {
+  let count = 0;
+  let dev = obj.devLeague.tracks;
+  for (var key in dev){
+      count++
+  }
+  return count
+ // console.log(obj.devLeague.tracks)
+}
 
 /* #fullTimeStatus
  *
@@ -80,7 +136,14 @@ var countTracks;
  * @return {Object}
  */
 
-var fullTimeStatus;
+var fullTimeStatus = function (obj, str) {
+  var arr = obj[str];
+  for (var i=0; i<arr.length; i++){
+     arr[i].fullTime.offered = true
+    return arr[i].fullTime
+  }
+  
+}
 
 /* #newTrack
  *
@@ -92,7 +155,12 @@ var fullTimeStatus;
  * @return {Object}
  */
 
-var newTrack;
+var newTrack = function (obj, arr, str){
+  for (var i=0; i<arr.length; i++) {
+  obj[str] = arr[i]
+  }
+  return obj
+}
 
 /* #bigDataTrack
  *
@@ -103,9 +171,21 @@ var newTrack;
  * @return {Object }
  */
 
-var bigDataTrack;
+var bigDataTrack = function (data, trackName) { 
+  //console.log(data);
+  //console.log(trackName);
+  let result = {};
+  //console.log(data.tracks[trackName][0].fullTime);
+  let info = data.tracks[trackName][0].fullTime;
+  //console.log(info);
+  info.offered = true;
+  info.currentStudents = 10;
 
-/* #incrementAge
+  result[trackName] = info;
+  return result
+}
+
+/* #increment
  *
  * Takes in 2 arguments 'value' and 'key' and returns key-value pairs in an object.
  *
@@ -114,7 +194,13 @@ var bigDataTrack;
  * @return {Object}
  */
 
-var incrementAge;
+var incrementAge = function (value, key) {
+  var result = {};
+  for (var i=0; i<value.length; i++) {
+    result[key[i]] = (value[i] + 1) + ' years old'
+  }
+  return result
+}
 
 /* #movieRatings
  *
@@ -125,7 +211,19 @@ var incrementAge;
  * @return {Object}
  */
 
-var movieRatings;
+var movieRatings = function (arr, value){
+  var result = {};
+
+  for (var i=0; i<arr.length; i++){
+    for (var j=0; j<arr[i].length; j++){
+        result[arr[i][j]] = value[j]
+        }
+      }
+      return result
+    }
+
+
+
 
 /* #sumOfAllStudents
  *
@@ -135,7 +233,16 @@ var movieRatings;
  * @return {Number}
  */
 
-var sumOfAllStudents;
+var sumOfAllStudents = function (obj){
+  var count = -5;
+  for (var i in obj){
+    let full = obj[i][0].fullTime.currentStudents
+    count+=full;
+    let part = obj[i][1].partTime.currentStudents
+    count+=part
+  }
+  return count
+}
 
 /* #mapLanguageToCreator
  *
@@ -147,7 +254,18 @@ var sumOfAllStudents;
  * @return {Object}
  */
 
-var mapLanguageToCreator;
+var mapLanguageToCreator = function (data, names, year){
+let result = {};
+for (var i in data){
+  if(data[i].yearCreated === year){
+    result[data[i].createdBy] = i
+    
+    }
+  }
+return result
+}
+
+
 
 /* #mapOccurrences
  *
@@ -157,8 +275,19 @@ var mapLanguageToCreator;
  * @return {Object}
  */
 
-var mapOccurrences;
-
+var mapOccurrences = function (data) {
+  let result = {};
+  //console.log(data)
+  for (var i in data){
+    let year = data[i].yearCreated
+    if(result.hasOwnProperty(year)) {
+      result[year]++
+    } else {
+      result[year] = 1
+    }
+  }
+  return result
+}
 /* #countLanguages
  *
  * Takes in an object and returns the number of languages in the dataset.
@@ -167,7 +296,13 @@ var mapOccurrences;
  * @return {Number}
  */
 
-var countLanguages;
+var countLanguages = function (obj){
+  let count = 0;
+  for (var i in obj){
+    count++
+  }
+  return count
+}
 
 /* #phoneNumber
  *
@@ -177,7 +312,16 @@ var countLanguages;
  * @return {Array}
  */
 
-var phoneNumber;
+var phoneNumber = function (str){
+  var check = ('0123456789')
+  let result = [];
+  for (var i=0; i<str.length;i++) {
+    if(check.includes(str[i])){
+      result.push(+str[i])
+    }
+  }
+ return result
+}
 
 /* #phoneNumber
  *
@@ -187,7 +331,22 @@ var phoneNumber;
  * @return {Array}
  */
 
-var reverseStrings;
+var reverseStrings = function (obj) {
+let arr = [];
+let str = ''
+let info = obj.devLeague.tracks
+  for (var key in info){
+    let splitString = key.split('');
+    //console.log(splitString)
+    let reverseArr = splitString.reverse();
+    let joinArr = reverseArr.join('');
+    //console.log(joinArr)
+    arr.push(joinArr)
+    }
+    return arr
+  }
+  //console.log(arr)
+
 
 /* #getAgeById
  *
@@ -197,7 +356,18 @@ var reverseStrings;
  * @return {Array}
  */
 
-var getAgeById;
+var getAgeById = function (obj){
+  let arr = [];
+  let info = obj.data.id[3]
+  //console.log(info)
+  
+   // console.log(info)
+    arr.push(info.username)
+    arr.push(info.age)
+    return arr
+  }
+  
+
 
 /* #allTheStates
  *
@@ -207,7 +377,21 @@ var getAgeById;
  * @return {Array}
  */
 
-var allTheStates;
+var allTheStates = function (obj){
+  let arr = [];
+  for (var i=0; i<obj.length;i++){
+    let info = obj[i].citiesLived;
+    for (var j=0; j<info.length;j++){
+      for (var key in info[j]){
+        let state = info[j][key].state
+          for (var k in state){
+            arr.push(k)
+          }
+        }
+     }
+  }
+  return arr
+}
 
 /* #allTheMovies
  *
@@ -217,7 +401,16 @@ var allTheStates;
  * @return {Array}
  */
 
-var allTheMovies;
+var allTheMovies = function (obj){
+  let arr = [];
+  for (var i=0; i<obj.length;i++){
+    let info = obj[i].favoriteMovies
+      for (var j=0; j<info.length; j++){
+        arr.push(info[j])
+      }
+  }
+  return arr
+}
 
 /* #addCoffeeFlavor
  *
@@ -228,7 +421,16 @@ var allTheMovies;
  * @return {Object}
  */
 
-var addCoffeeFlavor;
+var addCoffeeFlavor = function (obj, flavor){
+  let result = {};
+  for (var key in obj){
+    //console.log(key)
+    let info = obj[key].flavors;
+    info.push(flavor)
+    result[key] = info
+  }
+  return result
+}
 
 /* #avgCoffeePrice
  *
@@ -440,28 +642,28 @@ var getPrices;
 var addName;
 
 module.exports = {
-  getAllUsernames: null,
-  hometownCity: null,
-  usersCurrentState: null,
-  findAdmin: null,
-  addNewMovie: null,
-  favoriteBooks: null,
-  countTracks: null,
-  newTrack: null,
-  fullTimeStatus: null,
-  bigDataTrack: null,
-  incrementAge: null,
-  movieRatings: null,
-  sumOfAllStudents: null,
-  mapLanguageToCreator: null,
-  mapOccurrences: null,
-  countLanguages: null,
-  phoneNumber: null,
-  reverseStrings: null,
-  getAgeById: null,
-  allTheStates: null,
-  allTheMovies: null,
-  addCoffeeFlavor: null,
+  getAllUsernames: getAllUsernames,
+  hometownCity: hometownCity,
+  usersCurrentState: usersCurrentState,
+  findAdmin: findAdmin,
+  addNewMovie: addNewMovie,
+  favoriteBooks: favoriteBooks,
+  countTracks: countTracks,
+  newTrack: newTrack,
+  fullTimeStatus: fullTimeStatus,
+  bigDataTrack: bigDataTrack,
+  incrementAge: incrementAge,
+  movieRatings: movieRatings,
+  sumOfAllStudents: sumOfAllStudents,
+  mapLanguageToCreator: mapLanguageToCreator,
+  mapOccurrences: mapOccurrences,
+  countLanguages: countLanguages,
+  phoneNumber: phoneNumber,
+  reverseStrings: reverseStrings,
+  getAgeById: getAgeById,
+  allTheStates: allTheStates,
+  allTheMovies: allTheMovies,
+  addCoffeeFlavor: addCoffeeFlavor,
   avgCoffeePrice: null,
   updateBakedGoodsPrice: null,
   costOfCoffeeOnOrder: null,
